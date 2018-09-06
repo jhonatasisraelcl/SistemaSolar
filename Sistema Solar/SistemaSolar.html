@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+	<html>
+	    <head>
+	        <meta charset="utf-8">
+	        <title>Sistema solar three.js</title>
+	        <meta charset="autor" name="Jhonatas I.C.L.">
+	      
+	        
+	    </head>
+	    <body>
+	    	<!-- SOL, MERCURIO, VENUS, TERRA, MARTE, JUPITER, SATURNO, URANO, NETUNO--> 
+<!-- importando as bibliotecas (TRHEE e KEYBOARDSTATE)-->
+	    <script src="three.min.js"></script>
+		<script src="threex.keyboardstate.js"></script>
+	
+		<script src="physi.js"></script>
+		<script src="ColladaLoader.js"></script>
+	        <script type="text/javascript">     
+	       
+	        
+				//criando a camera, cena e o renderizador
+				var ORIGEM = new THREE.Vector3(0, 0, 0);
+				
+	           
+			Physijs.scripts.worker = '/js/physijs_worker.js';
+               	 Physijs.scripts.ammo = '/js/ammo.js';	
+			
+	            var cena= new Physijs.Scene();
+
+				var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+
+				var renderer = new THREE.WebGLRenderer();
+            			renderer.setSize(window.innerWidth, window.innerHeight);
+            			document.body.appendChild(renderer.domElement);
+            	
+			
+
+			
+			/*var nave = new Physijs.BoxMesh(new THREE.BoxGeometry(20,20,20),
+				new THREE.MeshBasicMaterial({transparent: true, opacity: 0}));
+
+	var loader = new THREE.ColladaLoader();
+loader.load('nave.dae', function (result) {
+result.cena.position.x = camera.position.x;
+result.cena.position.y = camera.position.y;
+result.cena.position.z = camera.position.z;
+result.cena.rotateY(1);
+result.cena.rotateZ(1);
+camera.translateZ(100);
+cena.add(result.cena)
+});	
+*/
+
+			
+            		var cometa1 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,2,10),
+			new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
+			cometa1.position.x=100;
+			cometa1.position.y=100;
+			cometa1.position.z=100;
+			cena.add(cometa1);
+            			
+	
+			var cometa2 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,10,2),
+			new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
+			cometa2.position.x=-100;
+			cometa2.position.y=-100;
+			cometa2.position.z=-100;
+			cena.add(cometa2);
+			
+			var cometa3 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,10,2),
+			new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
+			cometa3.position.x=200;
+			cometa3.position.y=200;
+			cometa3.position.z=200;
+			cena.add(cometa3);
+            			
+	
+			var cometa4 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,2,10),
+			new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
+			cometa4.position.x=-200;
+			cometa4.position.y=-200;
+			cometa4.position.z=-200;
+			cena.add(cometa4);
+			
+			
+ 		
+ 		camera.translateZ(50);
+ 		
+
+				
+				var keyboard = new THREEx.KeyboardState();
+				
+			
+				
+            			function animate() {
+				
+				var time = Date.now() * 0.00005;
+
+				if ( camera) light.rotation.y -= 0.01;
+
+				cometa1.position.x = Math.sin( time * 0.11 ) * 500;
+				cometa1.position.y = Math.cos( time * 0.9 ) * 400;
+				cometa1.position.z = Math.cos( time * 0.7 ) * 300;
+
+				cometa2.position.x = Math.cos( time * 0.9 ) * 400;
+				cometa2.position.y = Math.sin( time * 0.7 ) * 300;
+				cometa2.position.z = Math.sin( time * 0.5 ) * 200;
+
+				cometa3.position.x = Math.sin( time * 0.7 ) * 300;
+				cometa3.position.y = Math.cos( time * 0.5 ) * 200;
+				cometa3.position.z = Math.sin( time * 0.3 ) * 100;
+				
+				cometa4.position.x = Math.sin( time * 0.9 ) * 200;
+				cometa4.position.y = Math.cos( time * 0.7 ) * 100;
+				cometa4.position.z = Math.sin( time * 0.5 ) * 50;
+
+
+				if (keyboard.pressed("s"))
+					camera.translateZ (8);
+					
+				if (keyboard.pressed("w"))
+					camera.translateZ (-8);
+					
+				if (keyboard.pressed("d"))
+					camera.position.x +=5;
+					
+				if (keyboard.pressed("a"))
+					camera.position.x -=5;
+					
+				if (keyboard.pressed("up"))
+					camera.position.y += 5;
+					
+				if (keyboard.pressed("down"))
+					camera.position.y -= 5;
+				if (keyboard.pressed("left"))
+					camera.rotateY(5);
+				if (keyboard.pressed("rigth"))
+					camera.rotateY(-5);
+			
+			
+			cena.simulate();
+        
+        window.requestAnimationFrame(animate, renderer.domElement);
+
+				renderer.render( cena, camera );
+
+				
+               rotacionarMercurio();
+               rotacionarVenus();
+               rotacionarTerra();
+               rotacionarLua();
+               rotacionarMarte();
+               rotacionarJupiter();
+               rotacionarSaturno();
+               rotacionarUrano();
+                rotacionarNetuno();
+			}
+
+
+
+
+
+
+
+            	
+            	//as funçoes estao craindo os plantas e as estrelas
+            	function criarSol(objeto) {
+                        var geometriaSol = new THREE.SphereGeometry(25, 100, 100),
+                       	materialSol = new THREE.MeshBasicMaterial({map : THREE.ImageUtils.loadTexture('sol.jpg')});
+                        sol = new THREE.Mesh(geometriaSol, materialSol); 
+                        sol.add(objeto);
+                        cena.add(sol);
+                        return sol;
+
+                    }
+
+                        var geometriaSol = new THREE.Mesh(
+							new  THREE.SphereGeometry(24,100,100),
+							new THREE.MeshLambertMaterial(0xffffff)
+						);
+					
+						light =new THREE.PointLight(0xffffff);
+						light.position.set(0,0,0);
+						light.castShadow=true;
+
+						light.add(geometriaSol);
+						cena.add(light);
+                
+                
+                function criarMercurio(objeto){
+                    var geometriaMercurio = new THREE.SphereGeometry(1, 80, 80),
+                        materialMercurio = new THREE.MeshLambertMaterial({map : THREE.ImageUtils.loadTexture('mercurio.jpg')}),
+                        mercurio = new THREE.Mesh(geometriaMercurio, materialMercurio);
+                        mercurio.translateX(30);
+                        mercurio.translateZ(10);
+                        cena.add(mercurio);
+                        return mercurio;
+
+                }
+                function criarVenus(objeto){
+                        var geometriaVenus = new THREE.SphereGeometry(3, 80, 80),
+                        materialVenus = new THREE.MeshLambertMaterial({map : THREE.ImageUtils.loadTexture('venus.jpg')}),
+                        venus = new THREE.Mesh(geometriaVenus, materialVenus);
+                        venus.translateX(45);
+                        venus.translateZ(20);
+                        cena.add(venus);
+
+                        return venus;
+                }
+                function criarTerra(objeto){
+                        var geometriaTerra = new THREE.SphereGeometry(5, 80, 80),
+                        materialTerra = new THREE.MeshLambertMaterial({map : THREE.ImageUtils.loadTexture('terra.jpg')}),
+                        terra = new THREE.Mesh(geometriaTerra, materialTerra);
+                        terra.translateX(60);
+                        terra.translateZ(30);
+                        terra.add(objeto);
+                        cena.add(terra);
+
+                        return terra;
+               	}
+               function criarLua()
+    		{
+    			var geometriaLua = new THREE.SphereGeometry(1, 20, 20),
+    				materialLua = new THREE.MeshBasicMaterial({color: 0x909090}),
+    				lua = new THREE.Mesh(geometriaLua, materialLua);
+    			lua.translateX(10);
+    			return lua;
+    		}
+			
+               	function criarMarte(objeto){
+                        var geometriaMarte = new THREE.SphereGeometry(4, 80, 80),
+                        materialMarte = new THREE.MeshLambertMaterial({map : THREE.ImageUtils.loadTexture('marte.jpg')}),
+                        marte = new THREE.Mesh(geometriaMarte, materialMarte);
+                        marte.translateX(80);
+                        marte.translateZ(40);
+                        cena.add(marte);
+                        return marte;
+                }
+                function criarJupiter(objeto){
+                        var geometriaJupiter = new THREE.SphereGeometry(9, 80, 80),
+                        materialJupiter = new THREE.MeshLambertMaterial({map : THREE.ImageUtils.loadTexture('jupiter.jpg')}),
+                        jupiter = new THREE.Mesh(geometriaJupiter, materialJupiter);
+                        jupiter.translateX(100);
+                        jupiter.translateZ(50);
+                        cena.add(jupiter);
+                        return jupiter;
+                }
+                 function criarSaturno(objeto){
+                        var geometriaSaturno = new THREE.SphereGeometry(7, 80, 80),
+                        materialSaturno = new THREE.MeshLambertMaterial({map : THREE.ImageUtils.loadTexture('saturno.jpg')}),
+                        saturno = new THREE.Mesh(geometriaSaturno, materialSaturno);
+                        saturno.translateX(120);
+                        saturno.translateZ(60);
+                        cena.add(saturno);
+                        return saturno;
+                    }
+                    function criarUrano(objeto){
+                        var geometriaUrano = new THREE.SphereGeometry(4, 80, 80),
+                        materialUrano = new THREE.MeshLambertMaterial({map : THREE.ImageUtils.loadTexture('urano.jpg')}),
+                        urano = new THREE.Mesh(geometriaUrano, materialUrano);
+                        urano.translateX(140);
+                        urano.translateZ(70);
+                        cena.add(urano);
+                        return urano;
+                    }
+                   function criarNetuno(objeto){
+                        var geometriaNetuno = new THREE.SphereGeometry(4, 80, 80),
+                        materialNetuno = new THREE.MeshLambertMaterial({map : THREE.ImageUtils.loadTexture('netuno.jpg')}),
+                        netuno = new THREE.Mesh(geometriaNetuno, materialNetuno);
+                        netuno.translateX(160);
+                        netuno.translateZ(80);
+                        cena.add(netuno);
+                        return netuno;
+                    }
+                    
+				
+					 for (var f=0; f<=10; f++){
+					 	var forma_estrela = new THREE.Mesh(
+							new  THREE.SphereGeometry(0.5,100,100),
+							new THREE.MeshBasicMaterial({color:0xfffff0}));
+
+						var light =new THREE.PointLight(0xfffff0,3, 100,8)
+						
+										// x	,y ,z
+						light.position.x=Math.random()*800-400;
+						light.position.y=Math.random()*800-400;
+						light.position.z=Math.random()*800-400;
+						light.castShadow=true;
+
+
+						light.add(forma_estrela);
+						cena.add(light);
+					}
+
+					for (var e=0; e<3000; e++){
+						var forma_estrela = new THREE.Mesh(
+							new  THREE.SphereGeometry(0.5,1,1),
+							new THREE.MeshBasicMaterial(0xffffff));
+
+						 
+										// x	,y ,z
+						forma_estrela.position.x=Math.random()*1000-500;
+						forma_estrela.position.y=Math.random()*1000-500;
+						forma_estrela.position.z=Math.random()*1000-500;
+						//light.castShadow=true;
+
+
+						//light.add(forma_estrela);
+						cena.add(forma_estrela);
+					}
+						
+					var estrela1=new THREE.Mesh(new THREE.SphereGeometry(1.5,5,5),
+			new THREE.MeshBasicMaterial({color: 0xffffff}));
+			
+			estrela1.position.x=200;
+			estrela1.position.y=100;
+			cena.add(estrela1);
+			
+			var estrela2=new THREE.Mesh(new THREE.SphereGeometry(1.5,5,5),
+			new THREE.MeshBasicMaterial({color: 0xffffff}));
+			estrela2.position.x=213;
+			estrela2.position.y=93;
+			cena.add(estrela2);
+			
+			var estrela3=new THREE.Mesh(new THREE.SphereGeometry(1.5,5,5),
+			new THREE.MeshBasicMaterial({color: 0xffffff}));
+			estrela3.position.x=198;
+			estrela3.position.y=75;
+			cena.add(estrela3);
+			
+			var estrela4=new THREE.Mesh(new THREE.SphereGeometry(1.5,5,5),
+			new THREE.MeshBasicMaterial({color: 0xffffff}));
+			estrela4.position.x=186;
+			estrela4.position.y=82;
+			cena.add(estrela4);
+			
+			var estrela5=new THREE.Mesh(new THREE.SphereGeometry(1.5,5,5),
+			new THREE.MeshBasicMaterial({color: 0xffffff}));
+			estrela5.position.x=170;
+			estrela5.position.y=70;
+			cena.add(estrela5);
+			
+			var estrela6=new THREE.Mesh(new THREE.SphereGeometry(1.5,5,5),
+			new THREE.MeshBasicMaterial({color: 0xffffff}));
+			estrela6.position.x=160;
+			estrela6.position.y=65;
+			cena.add(estrela6);
+			
+			var estrela7=new THREE.Mesh(new THREE.SphereGeometry(1.5,5,5),
+			new THREE.MeshBasicMaterial({color: 0xffffff}));
+			estrela7.position.x=145;
+			estrela7.position.y=63;
+			cena.add(estrela7);
+		
+
+						
+
+						
+			
+
+
+			    // aqui ta criando a variavel (planetas ) e igualhando as funçoes
+
+                    var sol = criarSol(terra);
+            		var mercurio = criarMercurio();
+            		var venus = criarVenus();
+            		    		var lua = criarLua();
+
+            		    		var terra = criarTerra(lua);
+
+		            var marte = criarMarte();
+           			var jupiter = criarJupiter();
+           			var saturno = criarSaturno();
+            		var urano=criarUrano();
+            		var netuno=criarNetuno();
+
+            		// aqui esta fazendo os plantas girarem tanto em torno deles mesmos quanto em torno do sol 
+           		function rotacionarMercurio(){
+            	//rotaçao no eixo Y 
+                var matrizRotacaoY = new THREE.Matrix4();
+                	matrizRotacaoY.makeRotationY(calcularRadianos(5));
+                	mercurio.applyMatrix(matrizRotacaoY);
+                //translaçao e posiçao do planeta
+                var matrizRotacaoEixo = new THREE.Matrix4(),
+                	matrizTranslacaoPosicao = new THREE.Matrix4(),
+                	matrizTranslacaoOrigem = new THREE.Matrix4(),
+                	posicao = mercurio.position;
+
+                matrizRotacaoEixo.makeRotationY(calcularRadianos(0.1));
+                matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+                matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+                mercurio.applyMatrix(matrizTranslacaoOrigem);
+                mercurio.applyMatrix(matrizRotacaoEixo);
+                mercurio.applyMatrix(matrizTranslacaoPosicao);
+            }  function rotacionarVenus()
+            {
+                var matrizRotacaoY = new THREE.Matrix4();
+                matrizRotacaoY.makeRotationY(calcularRadianos(4.5));
+                venus.applyMatrix(matrizRotacaoY);
+
+                var matrizRotacaoEixo = new THREE.Matrix4(),
+                    matrizTranslacaoPosicao = new THREE.Matrix4(),
+                    matrizTranslacaoOrigem = new THREE.Matrix4(),
+                    posicao = venus.position;
+                matrizRotacaoEixo.makeRotationY(calcularRadianos(0.2));
+                matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+                matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+                venus.applyMatrix(matrizTranslacaoOrigem);
+                venus.applyMatrix(matrizRotacaoEixo);
+                venus.applyMatrix(matrizTranslacaoPosicao);
+            }
+            
+            function rotacionarTerra()
+            {
+                var matrizRotacaoY = new THREE.Matrix4();
+                matrizRotacaoY.makeRotationY(calcularRadianos(4));
+                terra.applyMatrix(matrizRotacaoY);
+
+                var matrizRotacaoEixo = new THREE.Matrix4(),
+                    matrizTranslacaoPosicao = new THREE.Matrix4(),
+                    matrizTranslacaoOrigem = new THREE.Matrix4(),
+                    posicao = terra.position;
+                matrizRotacaoEixo.makeRotationY(calcularRadianos(0.3));
+                matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+                matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+                terra.applyMatrix(matrizTranslacaoOrigem);
+                terra.applyMatrix(matrizRotacaoEixo);
+                terra.applyMatrix(matrizTranslacaoPosicao);
+            }
+           
+            function rotacionarMarte()
+            {
+                var matrizRotacaoY = new THREE.Matrix4();
+                matrizRotacaoY.makeRotationY(calcularRadianos(4));
+                marte.applyMatrix(matrizRotacaoY);
+
+                var matrizRotacaoEixo = new THREE.Matrix4(),
+                    matrizTranslacaoPosicao = new THREE.Matrix4(),
+                    matrizTranslacaoOrigem = new THREE.Matrix4(),
+                    posicao = marte.position;
+                matrizRotacaoEixo.makeRotationY(calcularRadianos(0.3));
+                matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+                matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+                marte.applyMatrix(matrizTranslacaoOrigem);
+                marte.applyMatrix(matrizRotacaoEixo);
+                marte.applyMatrix(matrizTranslacaoPosicao);
+            }
+           
+             function rotacionarLua()
+            {
+                var matrizRotacaoY = new THREE.Matrix4();
+                matrizRotacaoY.makeRotationY(calcularRadianos(3.5));
+                lua.applyMatrix(matrizRotacaoY);
+
+                var matrizRotacaoEixo = new THREE.Matrix4(),
+                    matrizTranslacaoPosicao = new THREE.Matrix4(),
+                    matrizTranslacaoOrigem = new THREE.Matrix4(),
+                    posicao = lua.position;
+                matrizRotacaoEixo.makeRotationY(calcularRadianos(0.4));
+                matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+                matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+                lua.applyMatrix(matrizTranslacaoOrigem);
+                lua.applyMatrix(matrizRotacaoEixo);
+                lua.applyMatrix(matrizTranslacaoPosicao);
+            }
+             function rotacionarJupiter()
+            {
+                var matrizRotacaoY = new THREE.Matrix4();
+                matrizRotacaoY.makeRotationY(calcularRadianos(3));
+                jupiter.applyMatrix(matrizRotacaoY);
+
+                var matrizRotacaoEixo = new THREE.Matrix4(),
+                    matrizTranslacaoPosicao = new THREE.Matrix4(),
+                    matrizTranslacaoOrigem = new THREE.Matrix4(),
+                    posicao = jupiter.position;
+                matrizRotacaoEixo.makeRotationY(calcularRadianos(0.5));
+                matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+                matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+                jupiter.applyMatrix(matrizTranslacaoOrigem);
+                jupiter.applyMatrix(matrizRotacaoEixo);
+                jupiter.applyMatrix(matrizTranslacaoPosicao);
+            }
+             function rotacionarSaturno()
+            {
+                var matrizRotacaoY = new THREE.Matrix4();
+                matrizRotacaoY.makeRotationY(calcularRadianos(2.5));
+                saturno.applyMatrix(matrizRotacaoY);
+
+                var matrizRotacaoEixo = new THREE.Matrix4(),
+                    matrizTranslacaoPosicao = new THREE.Matrix4(),
+                    matrizTranslacaoOrigem = new THREE.Matrix4(),
+                    posicao = saturno.position;
+                matrizRotacaoEixo.makeRotationY(calcularRadianos(0.6));
+                matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+                matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+                saturno.applyMatrix(matrizTranslacaoOrigem);
+                saturno.applyMatrix(matrizRotacaoEixo);
+                saturno.applyMatrix(matrizTranslacaoPosicao);
+            }
+            function rotacionarUrano()
+            {
+                var matrizRotacaoY = new THREE.Matrix4();
+                matrizRotacaoY.makeRotationY(calcularRadianos(2));
+                urano.applyMatrix(matrizRotacaoY);
+
+                var matrizRotacaoEixo = new THREE.Matrix4(),
+                    matrizTranslacaoPosicao = new THREE.Matrix4(),
+                    matrizTranslacaoOrigem = new THREE.Matrix4(),
+                    posicao = urano.position;
+                matrizRotacaoEixo.makeRotationY(calcularRadianos(0.7));
+                matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+                matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+                urano.applyMatrix(matrizTranslacaoOrigem);
+                urano.applyMatrix(matrizRotacaoEixo);
+                urano.applyMatrix(matrizTranslacaoPosicao);
+            }
+             function rotacionarNetuno()
+            {
+                var matrizRotacaoY = new THREE.Matrix4();
+                matrizRotacaoY.makeRotationY(calcularRadianos(1.5));
+                netuno.applyMatrix(matrizRotacaoY);
+
+                var matrizRotacaoEixo = new THREE.Matrix4(),
+                    matrizTranslacaoPosicao = new THREE.Matrix4(),
+                    matrizTranslacaoOrigem = new THREE.Matrix4()
+                    posicao = netuno.position;
+                matrizRotacaoEixo.makeRotationY(calcularRadianos(0.6));
+                matrizTranslacaoPosicao.makeTranslation(posicao.x, posicao.y, posicao.z);
+                matrizTranslacaoOrigem.makeTranslation(-posicao.x, -posicao.y, -posicao.z);
+                netuno.applyMatrix(matrizTranslacaoOrigem);
+                netuno.applyMatrix(matrizRotacaoEixo);
+                netuno.applyMatrix(matrizTranslacaoPosicao);
+            } 
+
+            //funçao que calcula os radianos 
+            function calcularRadianos(grau)
+            {
+                return grau * Math.PI / 180;
+            }
+            //funçao para renderizar os planetas
+           
+            animate();
+</script></body></html>
