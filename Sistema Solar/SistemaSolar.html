@@ -1,108 +1,76 @@
-
 <!DOCTYPE html>
 	<html>
 	    <head>
 	        <meta charset="utf-8">
 	        <title>Sistema solar three.js</title>
-	        <meta charset="autor" name="Jhonatas I.C.L.">
-	      
-	        
+	        <meta charset="autor" name="Jhonatas I.C.L.">  
 	    </head>
 	    <body>
 	    	<!-- SOL, MERCURIO, VENUS, TERRA, MARTE, JUPITER, SATURNO, URANO, NETUNO--> 
-<!-- importando as bibliotecas (TRHEE e KEYBOARDSTATE)-->
-	    <script src="three.min.js"></script>
+		<!-- importando as bibliotecas (TRHEE e KEYBOARDSTATE)-->
+	    	<script src="three.min.js"></script>
 		<script src="threex.keyboardstate.js"></script>
-	
 		<script src="physi.js"></script>
 		<script src="ColladaLoader.js"></script>
 	        <script type="text/javascript">     
-	       
-	        
-				//criando a camera, cena e o renderizador
-				var ORIGEM = new THREE.Vector3(0, 0, 0);
-				
-	           
-			Physijs.scripts.worker = '/js/physijs_worker.js';
-               	 Physijs.scripts.ammo = '/js/ammo.js';	
-			
-	            var cena= new Physijs.Scene();
+	     	//criando a camera, cena e o renderizador
+		var ORIGEM = new THREE.Vector3(0, 0, 0);	
+	     	Physijs.scripts.worker = '/js/physijs_worker.js';
+               	Physijs.scripts.ammo = '/js/ammo.js';		
+	        var cena= new Physijs.Scene();
+		var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+		var renderer = new THREE.WebGLRenderer();
+            	renderer.setSize(window.innerWidth, window.innerHeight);
+            	document.body.appendChild(renderer.domElement);
+		/*var nave = new Physijs.BoxMesh(new THREE.BoxGeometry(20,20,20), new THREE.MeshBasicMaterial({transparent: true, opacity: 0}));
+		var loader = new THREE.ColladaLoader();
+		loader.load('nave.dae', function (result) {
+			result.cena.position.x = camera.position.x;
+			result.cena.position.y = camera.position.y;
+			result.cena.position.z = camera.position.z;
+			result.cena.rotateY(1);
+			result.cena.rotateZ(1);
+			camera.translateZ(100);
+			cena.add(result.cena)
+		});*/
 
-				var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-
-				var renderer = new THREE.WebGLRenderer();
-            			renderer.setSize(window.innerWidth, window.innerHeight);
-            			document.body.appendChild(renderer.domElement);
-            	
-			
-
-			
-			/*var nave = new Physijs.BoxMesh(new THREE.BoxGeometry(20,20,20),
-				new THREE.MeshBasicMaterial({transparent: true, opacity: 0}));
-
-	var loader = new THREE.ColladaLoader();
-loader.load('nave.dae', function (result) {
-result.cena.position.x = camera.position.x;
-result.cena.position.y = camera.position.y;
-result.cena.position.z = camera.position.z;
-result.cena.rotateY(1);
-result.cena.rotateZ(1);
-camera.translateZ(100);
-cena.add(result.cena)
-});	
-*/
-
-			
-            		var cometa1 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,2,10),
-			new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
-			cometa1.position.x=100;
-			cometa1.position.y=100;
-			cometa1.position.z=100;
-			cena.add(cometa1);
+            	var cometa1 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,2,10),
+		new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
+		cometa1.position.x=100;
+		cometa1.position.y=100;
+		cometa1.position.z=100;
+		cena.add(cometa1);
             			
-	
-			var cometa2 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,10,2),
-			new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
-			cometa2.position.x=-100;
-			cometa2.position.y=-100;
-			cometa2.position.z=-100;
-			cena.add(cometa2);
+		var cometa2 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,10,2),
+		new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
+		cometa2.position.x=-100;
+		cometa2.position.y=-100;
+		cometa2.position.z=-100;
+		cena.add(cometa2);
 			
-			var cometa3 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,10,2),
-			new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
-			cometa3.position.x=200;
-			cometa3.position.y=200;
-			cometa3.position.z=200;
-			cena.add(cometa3);
+		var cometa3 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,10,2),
+		new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
+		cometa3.position.x=200;
+		cometa3.position.y=200;
+		cometa3.position.z=200;
+		cena.add(cometa3);
             			
-	
-			var cometa4 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,2,10),
-			new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
-			cometa4.position.x=-200;
-			cometa4.position.y=-200;
-			cometa4.position.z=-200;
-			cena.add(cometa4);
+		var cometa4 =new Physijs.SphereMesh(new THREE.SphereGeometry(4,2,10),
+		new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture('fogo.png')}));
+		cometa4.position.x=-200;
+		cometa4.position.y=-200;
+		cometa4.position.z=-200;
+		cena.add(cometa4);
 			
-			
- 		
  		camera.translateZ(50);
- 		
-
-				
-				var keyboard = new THREEx.KeyboardState();
-				
-			
-				
-            			function animate() {
-				
-				var time = Date.now() * 0.00005;
-
-				if ( camera) light.rotation.y -= 0.01;
-
+		var keyboard = new THREEx.KeyboardState();
+		function animate() {
+			var time = Date.now() * 0.00005;
+			if (camera) light.rotation.y -= 0.01;
 				cometa1.position.x = Math.sin( time * 0.11 ) * 500;
 				cometa1.position.y = Math.cos( time * 0.9 ) * 400;
 				cometa1.position.z = Math.cos( time * 0.7 ) * 300;
-
+			
 				cometa2.position.x = Math.cos( time * 0.9 ) * 400;
 				cometa2.position.y = Math.sin( time * 0.7 ) * 300;
 				cometa2.position.z = Math.sin( time * 0.5 ) * 200;
@@ -115,30 +83,14 @@ cena.add(result.cena)
 				cometa4.position.y = Math.cos( time * 0.7 ) * 100;
 				cometa4.position.z = Math.sin( time * 0.5 ) * 50;
 
-
-				if (keyboard.pressed("s"))
-					camera.translateZ (8);
-					
-				if (keyboard.pressed("w"))
-					camera.translateZ (-8);
-					
-				if (keyboard.pressed("d"))
-					camera.position.x +=5;
-					
-				if (keyboard.pressed("a"))
-					camera.position.x -=5;
-					
-				if (keyboard.pressed("up"))
-					camera.position.y += 5;
-					
-				if (keyboard.pressed("down"))
-					camera.position.y -= 5;
-				if (keyboard.pressed("left"))
-					camera.rotateY(5);
-				if (keyboard.pressed("rigth"))
-					camera.rotateY(-5);
-			
-			
+				if (keyboard.pressed("s")) camera.translateZ (8);
+				if (keyboard.pressed("w")) camera.translateZ (-8);
+				if (keyboard.pressed("d")) camera.position.x +=5;
+				if (keyboard.pressed("a")) camera.position.x -=5;
+				if (keyboard.pressed("up")) camera.position.y += 5;
+				if (keyboard.pressed("down")) camera.position.y -= 5;
+				if (keyboard.pressed("left")) camera.rotateY(5);
+				if (keyboard.pressed("rigth")) camera.rotateY(-5);
 			cena.simulate();
         
         window.requestAnimationFrame(animate, renderer.domElement);
